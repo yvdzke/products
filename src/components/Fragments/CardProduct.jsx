@@ -11,10 +11,14 @@ const CardProduct = (props) => {
 
 // Nested Header
 const Header = (props) => {
-  const { img, name } = props;
+  const { image, name } = props;
   return (
     <a href="#">
-      <img src={img} alt={name} className="p-8 rounded-t-md" />
+      <img
+        src={image}
+        alt={name}
+        className="p-8 rounded-t-md h-60 border border-white rounded-md w-full object-cover"
+      />
     </a>
   );
 };
@@ -48,7 +52,7 @@ const Footer = (props) => {
       </span>
       <Button
         onClick={() => handleAddToCart(id)}
-        varian="bg-blue-600 text-white font-bold p-2 rounded-md"
+        varian="bg-blue-600 text-white font-bold p-2 hover:bg-blue-500 rounded-md"
       >
         {btntext}
       </Button>

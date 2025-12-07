@@ -1,24 +1,52 @@
 import InputForm from "../Elements/Input/index.jsx";
 import Button from "../Elements/Button/Button.jsx";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
 
 const FormLogin = () => {
-  const handleLogin = (event) => {
-    event.preventDefault();
-    localStorage.setItem("username", event.target.username.value);
-    localStorage.setItem("password", event.target.password.value);
-    console.log(event.target.username.value);
-    console.log(event.target.password.value);
-    console.log("Ini Login Button");
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    if (!username || !password) {
+      alert("Please Enter Your Details");
+      return;
+    }
+
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+      alert("");
+      return;
+    }
+    if (user.username === username && user.password === password) {
+      localStorage.setItem("isLogin", "true");
+      navigate("/products");
+    } else {
+      alert("Username or password is incorrect");
+    }
   };
+
+  const emailRef = useRef(null);
+
+  useEffect(() => {
+    emailRef.current.focus();
+  }, []);
+
   return (
     <form onSubmit={handleLogin}>
       <InputForm
+        onChange={(e) => setUsername(e.target.value)}
         name="username"
         label="Username"
         type="text"
         placeholder="Enter your username"
+        ref={emailRef}
       />
       <InputForm
+        onChange={(e) => setPassword(e.target.value)}
         name="password"
         label="Password"
         type="password"

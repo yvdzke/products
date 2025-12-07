@@ -1,10 +1,19 @@
-import CardProduct from "../components/Fragments/CardProduct";
-import CardImg from "../assets/bg-1.jpg";
-import Button from "../components/Elements/Button/Button";
+// React Library
 import { useNavigate } from "react-router-dom";
 import { Fragment, useState, useEffect, useRef } from "react";
-import { IoMdCart } from "react-icons/io";
+
+// Custom Hooks
+import { useLogin } from "../hooks/useLogin.jsx";
+
+// Components
+import CardProduct from "../components/Fragments/CardProduct";
+import Button from "../components/Elements/Button/Button";
 import Counter from "../components/Fragments/Counter";
+
+// React Icons
+import { IoMdCart } from "react-icons/io";
+
+// Services
 import { getProducts } from "../services/product.service";
 
 // const products = [
@@ -40,13 +49,13 @@ import { getProducts } from "../services/product.service";
 //   },
 // ];
 
-const username = localStorage.getItem(`username`);
+const token = localStorage.getItem(`token`);
 
 const ProductPage = () => {
   // Logout Button
   const navigate = useNavigate();
   const handleLogout = () => {
-    localStorage.removeItem("username");
+    localStorage.removeItem("token");
     localStorage.removeItem("password");
     navigate("/login");
   };
@@ -55,13 +64,14 @@ const ProductPage = () => {
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [products, setProducts] = useState([]);
+  const username = useLogin();
 
   // Load Cart from localStorage
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem("cart")) || []);
   }, []);
 
-  // Calculate Total Price
+  // useState Total Price
   useEffect(() => {
     if (products.length > 0 && cart.length > 0) {
       const sum = cart.reduce((acc, item) => {
@@ -71,7 +81,7 @@ const ProductPage = () => {
       setTotalPrice(sum);
       localStorage.setItem("cart", JSON.stringify(cart));
     }
-  }, [cart]);
+  }, [cart, products]);
 
   // Handle Add To Cart
   const handleAddToCart = (id) => {
@@ -114,7 +124,7 @@ const ProductPage = () => {
   return (
     <Fragment>
       <div className="flex justify-end h-12 bg-blue-600 items-center px-5 ">
-        <p className="font-bold text-white">{username}</p>
+        <p className="text-white font-mono">{username}</p>
         <Button
           onClick={handleLogout}
           varian="bg-black ml-5  text-white py-1 rounded-md px-3 hover:bg-red-500"
@@ -183,20 +193,20 @@ const ProductPage = () => {
 
                   return (
                     <tr key={item.id}>
-                      <td>{product.name}</td>
+                      <td>{product.title.substring(0, 20)}</td>
                       <td>
-                        {price.toLocaleString("id-ID", {
+                        {price.toLocaleString("en-US", {
                           style: "currency",
-                          currency: "IDR",
+                          currency: "USD",
                           minimumFractionDigits: 0,
                           maximumFractionDigits: 0,
                         })}
                       </td>
                       <td className="text-center">{item.qty}</td>
                       <td>
-                        {total.toLocaleString("id-ID", {
+                        {total.toLocaleString("en-US", {
                           style: "currency",
-                          currency: "IDR",
+                          currency: "USD",
                           minimumFractionDigits: 0,
                           maximumFractionDigits: 0,
                         })}
@@ -208,9 +218,9 @@ const ProductPage = () => {
               <tr className="font-bold" ref={totalPriceRef}>
                 <td colSpan={3}>Total Price</td>
                 <td>
-                  {totalPrice.toLocaleString("id-ID", {
+                  {totalPrice.toLocaleString("en-US", {
                     style: "currency",
-                    currency: "IDR",
+                    currency: "USD",
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
                   })}

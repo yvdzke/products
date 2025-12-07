@@ -8,6 +8,8 @@ import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
 import ErrorPage from "./pages/404.jsx";
 import ProductPage from "./pages/products.jsx";
+import ProfilePage from "./pages/profile.jsx";
+import DetailProductPage from "./pages/detailproduct.jsx";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +28,14 @@ const router = createBrowserRouter([
   {
     path: "/products",
     element: <ProductPage />,
+  },
+  {
+    path: "/profile",
+    element: <ProfilePage />,
+  },
+  {
+    path: "/product/:id",
+    element: <DetailProductPage />,
   },
 ]);
 createRoot(document.getElementById("root")).render(

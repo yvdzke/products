@@ -11,12 +11,12 @@ const CardProduct = (props) => {
 
 // Nested Header
 const Header = (props) => {
-  const { image, name } = props;
+  const { image, title } = props;
   return (
     <a href="#">
       <img
         src={image}
-        alt={name}
+        alt={title}
         className="p-8 rounded-t-md h-60 border border-white rounded-md w-full object-cover"
       />
     </a>
@@ -30,9 +30,9 @@ const Body = (props) => {
   return (
     <div className="px-5 pb-5 h-full">
       <h5 className="text-xl font-semibold text-white tracking-tight">
-        {name}
+        {name.substring(0, 20)} ...
       </h5>
-      <p className="text-s text-white">{children}</p>
+      <p className="text-s text-white">{children.substring(0, 100)}....</p>
     </div>
   );
 };
@@ -43,9 +43,9 @@ const Footer = (props) => {
   return (
     <div className="flex items-center justify-between pb-5 px-5 ">
       <span className="text-3xl font-bold text-white">
-        {price.toLocaleString("id-ID", {
+        {price.toLocaleString("en-US", {
           style: "currency",
-          currency: "IDR",
+          currency: "USD",
           minimumFractionDigits: 0,
           maximumFractionDigits: 0,
         })}
